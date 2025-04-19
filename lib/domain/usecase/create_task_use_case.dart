@@ -5,7 +5,7 @@ class CreateTaskUseCase {
 
   CreateTaskUseCase(this.taskRepository);
 
-  Future<void> execute(String content) async {
-    await taskRepository.createTask(content);
+  Future<void> execute(String title, String description) async {
+    await taskRepository.createTask(title, description);
   }
 }

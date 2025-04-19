@@ -10,25 +10,32 @@ import 'create_task_test.mocks.dart';
 void main() {
   late CreateTaskUseCase createTask;
   final mockTaskRepository = MockTaskRepository();
-  final taskContent = "content";
+  final taskTitle = "title";
+  final taskDescription = "description";
   setUp(() {
     createTask = CreateTaskUseCase(mockTaskRepository);
   });
   group('createTask', () {
     test('should create a task using the repository', () async {
       when(
-        mockTaskRepository.createTask(taskContent),
+        mockTaskRepository.createTask(taskTitle, taskDescription),
       ).thenAnswer((_) async => Future.value());
 
-      await createTask.execute(taskContent);
+      await createTask.execute(taskTitle, taskDescription);
 
-      verify(mockTaskRepository.createTask(taskContent)).called(1);
+      verify(
+        mockTaskRepository.createTask(taskTitle, taskDescription),
+      ).called(1);
     });
     test('should throw if repository throws', () async {
+      when(
+        mockTaskRepository.createTask(taskTitle, taskDescription),
+      ).thenThrow(Exception('fail'));
 
-      when(mockTaskRepository.createTask(taskContent)).thenThrow(Exception('fail'));
-
-      expect(() => createTask.execute(taskContent), throwsA(isA<Exception>()));
+      expect(
+        () => createTask.execute(taskTitle, taskDescription),
+        throwsA(isA<Exception>()),
+      );
     });
   });
 }
