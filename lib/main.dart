@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todoist/presentation/create_task/create_task_page.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:todoist/presentation/home/home_page.dart';
 
 void main() async{
   await dotenv.load();
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home:  CreateTaskPage(),
+      home:  HomePage(),
     );
   }
 }
