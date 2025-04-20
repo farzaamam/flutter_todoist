@@ -1,7 +1,5 @@
-
 class Task {
-  final String content;
+  final String content, description, id, url;
 
-  Task(this.content);
-
+  Task(this.content, this.description, this.id, this.url);
 }

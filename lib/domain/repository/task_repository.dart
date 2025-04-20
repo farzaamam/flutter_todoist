@@ -1,3 +1,7 @@
+import 'package:todoist/domain/model/task.dart';
+
 abstract class TaskRepository {
-  Future<void> createTask(String title, String description);
+  Future<Task> createTask(String title, String description);
+
+  Future<List<Task>> getTasks();
 }
