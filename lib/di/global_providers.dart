@@ -1,21 +1,29 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todoist/data/datasource/remote_task_datasource.dart';
+import 'package:todoist/data/datasource/db/database.dart';
+import 'package:todoist/data/datasource/remote/remote_task_datasource.dart';
 import 'package:todoist/data/task_repository_imp.dart';
 import 'package:todoist/domain/repository/task_repository.dart';
 import 'package:todoist/domain/usecase/create_task_use_case.dart';
 import 'package:todoist/domain/usecase/get_tasks_use_case.dart';
+import 'package:todoist/domain/usecase/update_task_status_use_case.dart';
 
 final taskRepositoryProvider = Provider<TaskRepository>((ref) {
   final remote = ref.watch(taskRemoteDataSourceProvider);
+  final db = ref.watch(appDatabaseProvider);
 
-  return TaskRepositoryImp(remoteTaskDataSource: remote);
+  return TaskRepositoryImp(remoteTaskDataSource: remote, appDatabase: db);
 });
 
 final createTaskUseCaseProvider = Provider<CreateTaskUseCase>((ref) {
   final repo = ref.read(taskRepositoryProvider);
   return CreateTaskUseCase(repo);
+});
+
+final updateTaskUseCaseProvider = Provider<UpdateTaskStatusUseCase>((ref) {
+  final repo = ref.read(taskRepositoryProvider);
+  return UpdateTaskStatusUseCase(repo);
 });
 
 final getTaskUseCaseProvider = Provider<GetTasksUseCase>((ref) {
@@ -39,4 +47,7 @@ final dioProvider = Provider<Dio>((ref) {
 final taskRemoteDataSourceProvider = Provider<RemoteTaskDataSource>((ref) {
   final dio = ref.watch(dioProvider);
   return RemoteTaskDataSource(dio);
+});
+final appDatabaseProvider = Provider<AppDatabase>((ref) {
+  return AppDatabase();
 });

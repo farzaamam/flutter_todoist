@@ -6,7 +6,17 @@ class GetTasksUseCase {
 
   GetTasksUseCase(this.taskRepository);
 
-  Future<List<Task>> execute() async {
-    return await taskRepository.getTasks();
+  Stream<List<Task>> watchTasks() {
+    return taskRepository.watchTasksFromDb();
+  }
+
+  Future<void> refresh() async {
+    try {
+      final remoteTasks = await taskRepository.fetchTasksFromRemote();
+
+      await taskRepository.saveTasks(remoteTasks);
+    } catch (e) {
+      rethrow;
+    }
   }
 }

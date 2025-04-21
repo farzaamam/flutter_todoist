@@ -31,22 +31,25 @@ void main() {
     expect(controller.state.description, dummyDescription);
   });
 
-  test('when createTaskUseCase returns success submit updates state properly and returns true', () async {
-    when(
-      createTaskUseCase.execute(any, any),
-    ).thenAnswer((_) async => Future.value());
+  test(
+    'when createTaskUseCase returns success submit updates state properly and returns true',
+    () async {
+      when(
+        createTaskUseCase.execute(any, any),
+      ).thenAnswer((_) async => Future.value());
 
-    controller.setTitle(dummyTitle);
-    controller.setDescription(dummyDescription);
+      controller.setTitle(dummyTitle);
+      controller.setDescription(dummyDescription);
 
-    final future = controller.submit();
-    expect(controller.state.isSubmitting, true);
+      final future = controller.submit();
+      expect(controller.state.isSubmitting, true);
 
-    bool result = await future;
-    expect(true, result);
-    expect(controller.state.isSubmitting, false);
-    verify(createTaskUseCase.execute(dummyTitle, dummyDescription)).called(1);
-  });
+      bool result = await future;
+      expect(true, result);
+      expect(controller.state.isSubmitting, false);
+      verify(createTaskUseCase.execute(dummyTitle, dummyDescription)).called(1);
+    },
+  );
 
   test('when createTaskUseCase returns error submit returns false', () async {
     when(createTaskUseCase.execute(any, any)).thenThrow(Exception('fail'));

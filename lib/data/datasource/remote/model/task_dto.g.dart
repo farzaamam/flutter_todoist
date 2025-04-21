@@ -11,6 +11,8 @@ TaskDto _$TaskDtoFromJson(Map<String, dynamic> json) => TaskDto(
   json['description'] as String,
   json['id'] as String,
   json['url'] as String,
+  json['is_completed'] as bool,
+  (json['labels'] as List<dynamic>).map((e) => e as String).toList(),
 );
 
 Map<String, dynamic> _$TaskDtoToJson(TaskDto instance) => <String, dynamic>{
@@ -18,4 +20,6 @@ Map<String, dynamic> _$TaskDtoToJson(TaskDto instance) => <String, dynamic>{
   'description': instance.description,
   'id': instance.id,
   'url': instance.url,
+  'labels': instance.labels,
+  'is_completed': instance.is_completed,
 };
