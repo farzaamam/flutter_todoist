@@ -1,6 +1,7 @@
 import 'package:todoist/data/datasource/db/database.dart';
 import 'package:todoist/data/datasource/remote/model/task_dto.dart';
 import 'package:todoist/domain/model/task.dart';
+import 'package:todoist/domain/model/time_tracking.dart';
 
 extension TaskDtoMapper on TaskDto {
   Task toTask() {
@@ -53,6 +54,26 @@ extension TaskMapper on Task {
       status: status.name,
       url: url,
       createdAt: DateTime.now(),
+    );
+  }
+}
+
+extension TimeTrackingTableMapper on TimeTrackingTable {
+  TaskTimeTracking? toTaskTimeTracking() {
+    return TaskTimeTracking(
+      taskId: id,
+      startedAt: startedAt,
+      duration: duration,
+    );
+  }
+}
+
+extension TaskTimeTrackingMapper on TaskTimeTracking {
+  TimeTrackingTable toTaskTimeTracking() {
+    return TimeTrackingTable(
+      id: taskId,
+      startedAt: startedAt,
+      duration: duration,
     );
   }
 }

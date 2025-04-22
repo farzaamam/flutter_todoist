@@ -20,7 +20,18 @@ class TodoItems extends Table {
   Set<Column> get primaryKey => {id};
 }
 
-@DriftDatabase(tables: [TodoItems])
+class TimeTrackingTables extends Table {
+  TextColumn get id => text()();
+
+  IntColumn get duration => integer().withDefault(const Constant(0))();
+
+  IntColumn get startedAt => integer().withDefault(const Constant(0))();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+@DriftDatabase(tables: [TodoItems, TimeTrackingTables])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
@@ -32,7 +43,7 @@ class AppDatabase extends _$AppDatabase {
   Stream<List<TodoItem>> watchAllTasks() => select(todoItems).watch();
 
   Future<void> insertTask(TodoItem task) async {
-    into(todoItems).insertOnConflictUpdate(task);
+    await into(todoItems).insertOnConflictUpdate(task);
   }
 
   Future<void> saveTasks(List<TodoItem> tasks) async {
@@ -44,6 +55,27 @@ class AppDatabase extends _$AppDatabase {
   Future<TodoItem?> getTaskById(String id) {
     return (select(todoItems)
       ..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+  }
+
+  Future<TimeTrackingTable?> getTimeTrackingById(String id) {
+    return (select(timeTrackingTables)
+      ..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+  }
+
+  Future<void> updateTaskDuration(String taskId, int newDuration) async {
+    await (update(timeTrackingTables)..where(
+      (tbl) => tbl.id.equals(taskId),
+    )).write(TimeTrackingTablesCompanion(duration: Value(newDuration)));
+  }
+
+  Future<void> updateTaskStartedAt(String taskId, int startedAt) async {
+    await (update(timeTrackingTables)..where(
+      (tbl) => tbl.id.equals(taskId),
+    )).write(TimeTrackingTablesCompanion(startedAt: Value(startedAt)));
+  }
+
+  Future<void> insertTimeTracking(TimeTrackingTable timeTracking) async {
+    await into(timeTrackingTables).insertOnConflictUpdate(timeTracking);
   }
 
   static QueryExecutor _openConnection() {

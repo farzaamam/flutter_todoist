@@ -3,8 +3,7 @@ import 'package:mockito/annotations.dart';
 import 'package:todoist/domain/repository/task_repository.dart';
 import 'package:mockito/mockito.dart';
 import 'package:todoist/domain/usecase/create_task_use_case.dart';
-
-import 'create_task_test.mocks.dart';
+import 'create_task_use_case_test.mocks.dart';
 
 @GenerateMocks([TaskRepository])
 void main() {

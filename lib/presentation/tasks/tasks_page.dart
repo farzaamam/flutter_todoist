@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todoist/domain/model/task.dart';
 import 'package:todoist/presentation/create_task/create_task_page.dart';
+import 'package:todoist/presentation/task_detail/task_detail_page.dart';
 import 'package:todoist/presentation/tasks/tasks_controller.dart';
 import 'package:todoist/presentation/tasks/widgets/task_column.dart';
 
@@ -53,9 +54,21 @@ class _TasksPage extends ConsumerState<TasksPage> {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, st) => Center(child: Text('Error: $e')),
         data: (tasks) {
-          final columns = _buildTaskColumns(tasks, isPortrait, (task, status) {
-            controller.updateTaskStatus(task, status);
-          }, (Task task) {});
+          final columns = _buildTaskColumns(
+            tasks,
+            isPortrait,
+            (task, status) {
+              controller.updateTaskStatus(task, status);
+            },
+            (Task task) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => TaskDetailPage(task: task),
+                ),
+              );
+            },
+          );
           return isPortrait
               ? Column(children: columns)
               : Row(children: columns);

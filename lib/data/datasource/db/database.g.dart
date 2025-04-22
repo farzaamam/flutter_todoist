@@ -418,15 +418,281 @@ class TodoItemsCompanion extends UpdateCompanion<TodoItem> {
   }
 }
 
+class $TimeTrackingTablesTable extends TimeTrackingTables
+    with TableInfo<$TimeTrackingTablesTable, TimeTrackingTable> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TimeTrackingTablesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _durationMeta = const VerificationMeta(
+    'duration',
+  );
+  @override
+  late final GeneratedColumn<int> duration = GeneratedColumn<int>(
+    'duration',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _startedAtMeta = const VerificationMeta(
+    'startedAt',
+  );
+  @override
+  late final GeneratedColumn<int> startedAt = GeneratedColumn<int>(
+    'started_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, duration, startedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'time_tracking_tables';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<TimeTrackingTable> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('duration')) {
+      context.handle(
+        _durationMeta,
+        duration.isAcceptableOrUnknown(data['duration']!, _durationMeta),
+      );
+    }
+    if (data.containsKey('started_at')) {
+      context.handle(
+        _startedAtMeta,
+        startedAt.isAcceptableOrUnknown(data['started_at']!, _startedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  TimeTrackingTable map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TimeTrackingTable(
+      id:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}id'],
+          )!,
+      duration:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}duration'],
+          )!,
+      startedAt:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}started_at'],
+          )!,
+    );
+  }
+
+  @override
+  $TimeTrackingTablesTable createAlias(String alias) {
+    return $TimeTrackingTablesTable(attachedDatabase, alias);
+  }
+}
+
+class TimeTrackingTable extends DataClass
+    implements Insertable<TimeTrackingTable> {
+  final String id;
+  final int duration;
+  final int startedAt;
+  const TimeTrackingTable({
+    required this.id,
+    required this.duration,
+    required this.startedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['duration'] = Variable<int>(duration);
+    map['started_at'] = Variable<int>(startedAt);
+    return map;
+  }
+
+  TimeTrackingTablesCompanion toCompanion(bool nullToAbsent) {
+    return TimeTrackingTablesCompanion(
+      id: Value(id),
+      duration: Value(duration),
+      startedAt: Value(startedAt),
+    );
+  }
+
+  factory TimeTrackingTable.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TimeTrackingTable(
+      id: serializer.fromJson<String>(json['id']),
+      duration: serializer.fromJson<int>(json['duration']),
+      startedAt: serializer.fromJson<int>(json['startedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'duration': serializer.toJson<int>(duration),
+      'startedAt': serializer.toJson<int>(startedAt),
+    };
+  }
+
+  TimeTrackingTable copyWith({String? id, int? duration, int? startedAt}) =>
+      TimeTrackingTable(
+        id: id ?? this.id,
+        duration: duration ?? this.duration,
+        startedAt: startedAt ?? this.startedAt,
+      );
+  TimeTrackingTable copyWithCompanion(TimeTrackingTablesCompanion data) {
+    return TimeTrackingTable(
+      id: data.id.present ? data.id.value : this.id,
+      duration: data.duration.present ? data.duration.value : this.duration,
+      startedAt: data.startedAt.present ? data.startedAt.value : this.startedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TimeTrackingTable(')
+          ..write('id: $id, ')
+          ..write('duration: $duration, ')
+          ..write('startedAt: $startedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, duration, startedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TimeTrackingTable &&
+          other.id == this.id &&
+          other.duration == this.duration &&
+          other.startedAt == this.startedAt);
+}
+
+class TimeTrackingTablesCompanion extends UpdateCompanion<TimeTrackingTable> {
+  final Value<String> id;
+  final Value<int> duration;
+  final Value<int> startedAt;
+  final Value<int> rowid;
+  const TimeTrackingTablesCompanion({
+    this.id = const Value.absent(),
+    this.duration = const Value.absent(),
+    this.startedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TimeTrackingTablesCompanion.insert({
+    required String id,
+    this.duration = const Value.absent(),
+    this.startedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id);
+  static Insertable<TimeTrackingTable> custom({
+    Expression<String>? id,
+    Expression<int>? duration,
+    Expression<int>? startedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (duration != null) 'duration': duration,
+      if (startedAt != null) 'started_at': startedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TimeTrackingTablesCompanion copyWith({
+    Value<String>? id,
+    Value<int>? duration,
+    Value<int>? startedAt,
+    Value<int>? rowid,
+  }) {
+    return TimeTrackingTablesCompanion(
+      id: id ?? this.id,
+      duration: duration ?? this.duration,
+      startedAt: startedAt ?? this.startedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (duration.present) {
+      map['duration'] = Variable<int>(duration.value);
+    }
+    if (startedAt.present) {
+      map['started_at'] = Variable<int>(startedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TimeTrackingTablesCompanion(')
+          ..write('id: $id, ')
+          ..write('duration: $duration, ')
+          ..write('startedAt: $startedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $TodoItemsTable todoItems = $TodoItemsTable(this);
+  late final $TimeTrackingTablesTable timeTrackingTables =
+      $TimeTrackingTablesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [todoItems];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+    todoItems,
+    timeTrackingTables,
+  ];
 }
 
 typedef $$TodoItemsTableCreateCompanionBuilder =
@@ -651,10 +917,200 @@ typedef $$TodoItemsTableProcessedTableManager =
       TodoItem,
       PrefetchHooks Function()
     >;
+typedef $$TimeTrackingTablesTableCreateCompanionBuilder =
+    TimeTrackingTablesCompanion Function({
+      required String id,
+      Value<int> duration,
+      Value<int> startedAt,
+      Value<int> rowid,
+    });
+typedef $$TimeTrackingTablesTableUpdateCompanionBuilder =
+    TimeTrackingTablesCompanion Function({
+      Value<String> id,
+      Value<int> duration,
+      Value<int> startedAt,
+      Value<int> rowid,
+    });
+
+class $$TimeTrackingTablesTableFilterComposer
+    extends Composer<_$AppDatabase, $TimeTrackingTablesTable> {
+  $$TimeTrackingTablesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get duration => $composableBuilder(
+    column: $table.duration,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get startedAt => $composableBuilder(
+    column: $table.startedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TimeTrackingTablesTableOrderingComposer
+    extends Composer<_$AppDatabase, $TimeTrackingTablesTable> {
+  $$TimeTrackingTablesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get duration => $composableBuilder(
+    column: $table.duration,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get startedAt => $composableBuilder(
+    column: $table.startedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TimeTrackingTablesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $TimeTrackingTablesTable> {
+  $$TimeTrackingTablesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get duration =>
+      $composableBuilder(column: $table.duration, builder: (column) => column);
+
+  GeneratedColumn<int> get startedAt =>
+      $composableBuilder(column: $table.startedAt, builder: (column) => column);
+}
+
+class $$TimeTrackingTablesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $TimeTrackingTablesTable,
+          TimeTrackingTable,
+          $$TimeTrackingTablesTableFilterComposer,
+          $$TimeTrackingTablesTableOrderingComposer,
+          $$TimeTrackingTablesTableAnnotationComposer,
+          $$TimeTrackingTablesTableCreateCompanionBuilder,
+          $$TimeTrackingTablesTableUpdateCompanionBuilder,
+          (
+            TimeTrackingTable,
+            BaseReferences<
+              _$AppDatabase,
+              $TimeTrackingTablesTable,
+              TimeTrackingTable
+            >,
+          ),
+          TimeTrackingTable,
+          PrefetchHooks Function()
+        > {
+  $$TimeTrackingTablesTableTableManager(
+    _$AppDatabase db,
+    $TimeTrackingTablesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer:
+              () => $$TimeTrackingTablesTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer:
+              () => $$TimeTrackingTablesTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer:
+              () => $$TimeTrackingTablesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<int> duration = const Value.absent(),
+                Value<int> startedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TimeTrackingTablesCompanion(
+                id: id,
+                duration: duration,
+                startedAt: startedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                Value<int> duration = const Value.absent(),
+                Value<int> startedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TimeTrackingTablesCompanion.insert(
+                id: id,
+                duration: duration,
+                startedAt: startedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper:
+              (p0) =>
+                  p0
+                      .map(
+                        (e) => (
+                          e.readTable(table),
+                          BaseReferences(db, table, e),
+                        ),
+                      )
+                      .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TimeTrackingTablesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $TimeTrackingTablesTable,
+      TimeTrackingTable,
+      $$TimeTrackingTablesTableFilterComposer,
+      $$TimeTrackingTablesTableOrderingComposer,
+      $$TimeTrackingTablesTableAnnotationComposer,
+      $$TimeTrackingTablesTableCreateCompanionBuilder,
+      $$TimeTrackingTablesTableUpdateCompanionBuilder,
+      (
+        TimeTrackingTable,
+        BaseReferences<
+          _$AppDatabase,
+          $TimeTrackingTablesTable,
+          TimeTrackingTable
+        >,
+      ),
+      TimeTrackingTable,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
   $$TodoItemsTableTableManager get todoItems =>
       $$TodoItemsTableTableManager(_db, _db.todoItems);
+  $$TimeTrackingTablesTableTableManager get timeTrackingTables =>
+      $$TimeTrackingTablesTableTableManager(_db, _db.timeTrackingTables);
 }
