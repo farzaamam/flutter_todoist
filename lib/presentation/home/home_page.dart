@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todoist/presentation/history/completed_task_history_page.dart';
 import 'package:todoist/presentation/tasks/tasks_page.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -13,9 +14,8 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   int _index = 0;
 
-  //TODO taskhistory
   final List<Widget> _pages = const [
-    TasksPage(), TasksPage()
+    TasksPage(), CompletedTasksHistoryPage()
   ];
 
   @override
