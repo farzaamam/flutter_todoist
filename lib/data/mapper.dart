@@ -1,5 +1,7 @@
 import 'package:todoist/data/datasource/db/database.dart';
+import 'package:todoist/data/datasource/remote/model/comment_dto.dart';
 import 'package:todoist/data/datasource/remote/model/task_dto.dart';
+import 'package:todoist/domain/model/comment.dart';
 import 'package:todoist/domain/model/task.dart';
 import 'package:todoist/domain/model/time_tracking.dart';
 
@@ -90,5 +92,11 @@ extension TodoItemMapper on TodoItem {
         orElse: () => TaskStatus.toDo,
       ),
     );
+  }
+}
+
+extension CommentDtoMapper on CommentDto {
+  Comment toComment() {
+    return Comment(id: id, content: content);
   }
 }

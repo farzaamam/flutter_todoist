@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todoist/presentation/task_detail/widget/task_timer_controller.dart';
+import 'package:todoist/presentation/task_detail/time_tracking/task_timer_controller.dart';
 
 class TimerWidget extends ConsumerWidget {
   final String taskId;

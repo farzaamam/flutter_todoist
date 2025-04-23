@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todoist/presentation/task_detail/widget/comment_widget.dart';
-import 'package:todoist/presentation/task_detail/widget/timer_widget.dart';
+import 'package:todoist/presentation/task_detail/comment/comment_widget.dart';
+import 'package:todoist/presentation/task_detail/time_tracking/timer_widget.dart';
 import '../../../domain/model/task.dart';
 
 class TaskDetailPage extends ConsumerWidget {

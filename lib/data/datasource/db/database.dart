@@ -62,6 +62,7 @@ class AppDatabase extends _$AppDatabase {
       ..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
   }
 
+
   Future<void> updateTaskDuration(String taskId, int newDuration) async {
     await (update(timeTrackingTables)..where(
       (tbl) => tbl.id.equals(taskId),
