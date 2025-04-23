@@ -68,7 +68,7 @@ class CreateTaskPage extends ConsumerWidget {
     } else {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Something went wrong')));
+      ).showSnackBar(const SnackBar(content: Text('Something went wrong :')));
     }
   }
 
