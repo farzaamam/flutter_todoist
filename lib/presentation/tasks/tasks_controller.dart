@@ -48,7 +48,7 @@ class TasksController extends StateNotifier<AsyncValue<List<Task>>> {
     final previous = state.valueOrNull ?? [];
     try {
       final updatedTask = task.copyWith(newStatus: newStatus);
-      updateTaskUseCase.execute(task, newStatus);
+      await updateTaskUseCase.execute(task, newStatus);
       state = AsyncValue.data([
         for (final t in previous)
           if (t.id == task.id) updatedTask else t,

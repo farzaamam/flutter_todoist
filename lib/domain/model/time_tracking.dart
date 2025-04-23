@@ -15,8 +15,8 @@ class TaskTimeTracking {
   }
 
   int getTotalTrackedTime() {
-    final nowInSeconds = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     if (isRunning()) {
+      final nowInSeconds = DateTime.now().millisecondsSinceEpoch ~/ 1000;
       return _duration + (nowInSeconds - _startedAt);
     } else {
       return _duration;
@@ -36,6 +36,8 @@ class TaskTimeTracking {
   }
 
   void stop() {
+    if (!isRunning()) return;
+
     final nowInSeconds = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     final updatedDuration = _duration + (nowInSeconds - _startedAt);
 

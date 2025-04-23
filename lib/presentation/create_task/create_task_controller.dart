@@ -29,8 +29,6 @@ class CreateTaskController extends StateNotifier<CreateTaskState> {
       return true;
     } catch (e) {
       state = state.copyWith(isSubmitting: false);
-      print("errr");
-      print(e);
       return false;
     }
   }

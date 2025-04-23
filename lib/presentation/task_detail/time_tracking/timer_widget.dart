@@ -5,16 +5,21 @@ import 'package:todoist/presentation/task_detail/time_tracking/task_timer_contro
 
 class TimerWidget extends ConsumerWidget {
   final String taskId;
+  final bool isCompleted;
 
-  const TimerWidget({super.key, required this.taskId});
+  const TimerWidget({
+    super.key,
+    required this.taskId,
+    required this.isCompleted,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final timerState = ref.watch(timerControllerProvider(taskId));
 
     String formatDuration(int totalSeconds) {
-      final d = Duration(seconds: totalSeconds);
-      return d.toString().split('.').first.padLeft(8, "0");
+      final duration = Duration(seconds: totalSeconds);
+      return duration.toString().split('.').first.padLeft(8, "0");
     }
 
     return Column(
@@ -34,34 +39,36 @@ class TimerWidget extends ConsumerWidget {
             letterSpacing: 1.5,
           ),
         ),
-        const SizedBox(height: 16),
-        GestureDetector(
-          onTap: () {
-            ref.read(timerControllerProvider(taskId).notifier).toggle();
-          },
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            height: 64,
-            width: 64,
-            decoration: BoxDecoration(
-              color: timerState.isRunning ? Colors.redAccent : Colors.green,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 6,
-                  offset: Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Icon(
-              timerState.isRunning ? Icons.pause : Icons.play_arrow,
-              color: Colors.white,
-              size: 32,
+        if (!isCompleted) ...[
+          const SizedBox(height: 16),
+          GestureDetector(
+            onTap: () {
+              ref.read(timerControllerProvider(taskId).notifier).toggle();
+            },
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              height: 64,
+              width: 64,
+              decoration: BoxDecoration(
+                color: timerState.isRunning ? Colors.redAccent : Colors.green,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 6,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Icon(
+                timerState.isRunning ? Icons.pause : Icons.play_arrow,
+                color: Colors.white,
+                size: 32,
+              ),
             ),
           ),
-        ),
+        ],
       ],
     );
   }

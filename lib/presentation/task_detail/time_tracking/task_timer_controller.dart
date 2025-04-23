@@ -28,7 +28,7 @@ class TimerController extends StateNotifier<TimerState> {
     );
 
     state = TimerState(
-      duration: taskTimeTracking == null ? 0 : taskTimeTracking.getDuration(),
+      duration: taskTimeTracking == null ? 0 : taskTimeTracking.getTotalTrackedTime(),
       isRunning:
           taskTimeTracking == null ? false : taskTimeTracking.isRunning(),
     );
@@ -82,7 +82,7 @@ class TimerState {
 
   TimerState({required this.isRunning, required this.duration});
 
-  TimerState copyWith({bool? isRunning, int? duration}) {
+  TimerState copyWith({bool? isRunning, int? duration, bool? isCompleted}) {
     return TimerState(
       isRunning: isRunning ?? this.isRunning,
       duration: duration ?? this.duration,

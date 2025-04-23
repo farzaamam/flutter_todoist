@@ -1,8 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
+import 'package:todoist/domain/model/task.dart';
 import 'package:todoist/domain/repository/task_repository.dart';
 import 'package:mockito/mockito.dart';
 import 'package:todoist/domain/usecase/create_task_use_case.dart';
+
 import 'create_task_use_case_test.mocks.dart';
 
 @GenerateMocks([TaskRepository])
@@ -11,6 +13,7 @@ void main() {
   final mockTaskRepository = MockTaskRepository();
   final taskTitle = "title";
   final taskDescription = "description";
+  final mockTask=Task(taskTitle, taskDescription, "id", "url", TaskStatus.done);
   setUp(() {
     createTask = CreateTaskUseCase(mockTaskRepository);
   });
@@ -18,7 +21,7 @@ void main() {
     test('should create a task using the repository', () async {
       when(
         mockTaskRepository.createTask(taskTitle, taskDescription),
-      ).thenAnswer((_) async => Future.value());
+      ).thenAnswer((_) async => Future.value(mockTask));
 
       await createTask.execute(taskTitle, taskDescription);
 

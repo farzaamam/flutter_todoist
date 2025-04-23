@@ -21,7 +21,13 @@ class TimeTrackingUseCase {
   }
 
   Future<void> stop(String taskId) async {
-    repository.stop(taskId);
+    TaskTimeTracking? timeTracking = await repository.getTimeTrackingById(
+      taskId,
+    );
+    if (timeTracking != null) {
+      timeTracking.stop();
+      await repository.updateTimeTracking(timeTracking);
+    }
   }
 
   Future<TaskTimeTracking?> getTimeTrackingByTaskId(String taskId) async {

@@ -14,6 +14,14 @@ class TaskDetailPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Task Detail"),
+        actions: [
+          /*  IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              // TODO: Trigger delete confirmation & action
+            },
+          ),*/
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -22,9 +30,9 @@ class TaskDetailPage extends ConsumerWidget {
           children: [
             Text(
               task.content,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
@@ -33,10 +41,13 @@ class TaskDetailPage extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
             const Divider(height: 32),
-            TimerWidget(taskId: task.id),
+            TimerWidget(
+              taskId: task.id,
+              isCompleted: task.status == TaskStatus.done,
+            ),
             const Divider(height: 32),
             CommentWidget(taskId: task.id),
-          ]
+          ],
         ),
       ),
     );

@@ -76,7 +76,7 @@ class _CommentWidget extends ConsumerState<CommentWidget> {
                     },
                   ),
       loading: () => const Center(child: LinearProgressIndicator()),
-      error: (e, _) => Text('Failed to load comments: $e'),
+      error: (_, _) => Text('Failed to load comments'),
     );
   }
 

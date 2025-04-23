@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:todoist/domain/model/completed_task_history.dart';
-import 'package:todoist/presentation/history/task_history_controller.dart';
+import 'package:todoist/presentation/history/completed_task_controller.dart';
 
 class CompletedTasksHistoryPage extends ConsumerWidget {
   const CompletedTasksHistoryPage({super.key});

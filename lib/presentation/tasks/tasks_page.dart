@@ -65,8 +65,8 @@ class _TasksPage extends ConsumerState<TasksPage> {
           final columns = _buildTaskColumns(
             tasks,
             isPortrait,
-            (task, status) {
-              controller.updateTaskStatus(task, status);
+            (task, status) async {
+              await controller.updateTaskStatus(task, status);
             },
             (Task task) {
               Navigator.push(

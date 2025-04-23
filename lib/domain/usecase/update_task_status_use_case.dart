@@ -25,15 +25,20 @@ class UpdateTaskStatusUseCase {
             task.status == TaskStatus.toDo) &&
         newStatus == TaskStatus.done) {
       await taskRepository.closeTask(task.id);
-      await timeTrackingRepository.stop(task.id);
+
       TaskTimeTracking? timeTracking = await timeTrackingRepository
           .getTimeTrackingById(task.id);
+      if (timeTracking != null) {
+        timeTracking.stop();
+        await timeTrackingRepository.updateTimeTracking(timeTracking);
+      }
+
       await completedTaskRepository.addCompletedTask(
         CompletedTaskHistory(
           task.content,
           task.description,
           task.id,
-          timeTracking == null ? 0 : timeTracking.getDuration(),
+          timeTracking == null ? 0 : timeTracking.getTotalTrackedTime(),
           DateTime.now().millisecondsSinceEpoch ~/ 1000,
         ),
       );

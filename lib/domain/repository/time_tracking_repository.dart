@@ -7,5 +7,4 @@ abstract class TimeTrackingRepository {
 
   Future<void> createTimeTracking(TaskTimeTracking timeTracking);
 
-  Future<void> stop(String taskId);
 }
