@@ -13,7 +13,6 @@ class GetTasksUseCase {
   Future<void> refresh() async {
     try {
       final remoteTasks = await taskRepository.fetchTasksFromRemote();
-
       await taskRepository.saveTasks(remoteTasks);
     } catch (e) {
       rethrow;

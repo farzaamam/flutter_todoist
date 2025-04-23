@@ -10,7 +10,7 @@ extension TaskDtoMapper on TaskDto {
   Task toTask() {
     final label = labels.firstOrNull;
 
-    final status = _mapLabelToStatus(label);
+    final status = mapLabelToStatus(label);
 
     return Task(
       content,
@@ -20,18 +20,18 @@ extension TaskDtoMapper on TaskDto {
       is_completed ? TaskStatus.done : status,
     );
   }
+}
 
-  TaskStatus _mapLabelToStatus(String? label) {
-    switch (label) {
-      case 'toDo':
-        return TaskStatus.toDo;
-      case 'inProgress':
-        return TaskStatus.inProgress;
-      case 'done':
-        return TaskStatus.done;
-      default:
-        return TaskStatus.toDo;
-    }
+TaskStatus mapLabelToStatus(String? label) {
+  switch (label) {
+    case 'toDo':
+      return TaskStatus.toDo;
+    case 'inProgress':
+      return TaskStatus.inProgress;
+    case 'done':
+      return TaskStatus.done;
+    default:
+      return TaskStatus.toDo;
   }
 }
 
@@ -114,6 +114,6 @@ extension CompletedTaskHistoryMapper on CompletedTaskHistory {
 
 extension CompletedTaskHistoryTableMapper on CompletedTaskHistoryTable {
   CompletedTaskHistory toDomain() {
-    return CompletedTaskHistory(title, description, id, duration,completedAt);
+    return CompletedTaskHistory(title, description, id, duration, completedAt);
   }
 }
