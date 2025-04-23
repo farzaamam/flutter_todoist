@@ -23,6 +23,7 @@ class TasksController extends StateNotifier<AsyncValue<List<Task>>> {
     _init();
   }
 
+  //listens to the latest tasks
   void _init() {
     _subscription = getTasksUseCase.watchTasks().listen(
       (tasks) => state = AsyncValue.data(tasks),

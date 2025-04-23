@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todoist/di/global_providers.dart';
+import 'package:todoist/domain/model/time_tracking.dart';
 import 'package:todoist/domain/usecase/time_tracking_use_case.dart';
 
 final timerControllerProvider = StateNotifierProvider.autoDispose
@@ -14,7 +15,6 @@ final timerControllerProvider = StateNotifierProvider.autoDispose
 class TimerController extends StateNotifier<TimerState> {
   final String taskId;
   final TimeTrackingUseCase useCase;
-
   Timer? _ticker;
 
   TimerController({required this.taskId, required this.useCase})
@@ -23,11 +23,17 @@ class TimerController extends StateNotifier<TimerState> {
   }
 
   Future<void> _initialize() async {
-    final duration = await useCase.getTotalTrackedTime(taskId);
-    final isRunning = await useCase.isRunning(taskId);
-    state = TimerState(duration: duration, isRunning: isRunning);
+    TaskTimeTracking? taskTimeTracking = await useCase.getTimeTrackingByTaskId(
+      taskId,
+    );
 
-    if (isRunning) {
+    state = TimerState(
+      duration: taskTimeTracking == null ? 0 : taskTimeTracking.getDuration(),
+      isRunning:
+          taskTimeTracking == null ? false : taskTimeTracking.isRunning(),
+    );
+
+    if (state.isRunning) {
       _startTicker();
     }
   }
@@ -35,21 +41,30 @@ class TimerController extends StateNotifier<TimerState> {
   void _startTicker() {
     _ticker?.cancel();
     _ticker = Timer.periodic(const Duration(seconds: 1), (_) async {
-      final updatedDuration = await useCase.getTotalTrackedTime(taskId);
+      final updatedDuration = await _getTotalTrackedTime();
       state = state.copyWith(duration: updatedDuration);
     });
+  }
+
+  Future<int> _getTotalTrackedTime() async {
+    TaskTimeTracking? taskTimeTracking = await useCase.getTimeTrackingByTaskId(
+      taskId,
+    );
+    return taskTimeTracking == null
+        ? 0
+        : taskTimeTracking.getTotalTrackedTime();
   }
 
   Future<void> toggle() async {
     if (state.isRunning) {
       _ticker?.cancel();
-      final totalBeforeStop = await useCase.getTotalTrackedTime(taskId);
+      final totalBeforeStop = await _getTotalTrackedTime();
       await useCase.stop(taskId);
       state = state.copyWith(duration: totalBeforeStop, isRunning: false);
     } else {
       await useCase.start(taskId);
       _startTicker();
-      final updatedDuration = await useCase.getTotalTrackedTime(taskId);
+      final updatedDuration = await _getTotalTrackedTime();
       state = state.copyWith(duration: updatedDuration, isRunning: true);
     }
   }

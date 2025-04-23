@@ -1,10 +1,22 @@
+import 'package:todoist/domain/model/completed_task_history.dart';
 import 'package:todoist/domain/model/task.dart';
+import 'package:todoist/domain/model/time_tracking.dart';
+import 'package:todoist/domain/repository/completed_task_repository.dart';
 import 'package:todoist/domain/repository/task_repository.dart';
+import 'package:todoist/domain/repository/time_tracking_repository.dart';
 
 class UpdateTaskStatusUseCase {
   final TaskRepository taskRepository;
 
-  UpdateTaskStatusUseCase(this.taskRepository);
+  final TimeTrackingRepository timeTrackingRepository;
+
+  final CompletedTaskRepository completedTaskRepository;
+
+  UpdateTaskStatusUseCase(
+    this.taskRepository,
+    this.timeTrackingRepository,
+    this.completedTaskRepository,
+  );
 
   Future<void> execute(Task task, TaskStatus newStatus) async {
     await taskRepository.updateTaskStatus(task.copyWith(newStatus: newStatus));
@@ -12,9 +24,19 @@ class UpdateTaskStatusUseCase {
     if ((task.status == TaskStatus.inProgress ||
             task.status == TaskStatus.toDo) &&
         newStatus == TaskStatus.done) {
-      taskRepository.closeTask(task.id);
-    } else if ((task.status == TaskStatus.done)) {
-      taskRepository.openTask(task.id);
+      await taskRepository.closeTask(task.id);
+      await timeTrackingRepository.stop(task.id);
+      TaskTimeTracking? timeTracking = await timeTrackingRepository
+          .getTimeTrackingById(task.id);
+      await completedTaskRepository.addCompletedTask(
+        CompletedTaskHistory(
+          task.content,
+          task.description,
+          task.id,
+          timeTracking == null ? 0 : timeTracking.getDuration(),
+          DateTime.now().millisecondsSinceEpoch ~/ 1000,
+        ),
+      );
     }
   }
 }

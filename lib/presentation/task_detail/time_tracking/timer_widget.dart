@@ -28,9 +28,10 @@ class TimerWidget extends ConsumerWidget {
         Text(
           formatDuration(timerState.duration),
           style: const TextStyle(
-            fontSize: 36,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 2,
+            fontSize: 40,
+            fontWeight: FontWeight.w700,
+            fontFamily: 'RobotoMono',
+            letterSpacing: 1.5,
           ),
         ),
         const SizedBox(height: 16),
@@ -39,12 +40,20 @@ class TimerWidget extends ConsumerWidget {
             ref.read(timerControllerProvider(taskId).notifier).toggle();
           },
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
             height: 64,
             width: 64,
             decoration: BoxDecoration(
-              color: timerState.isRunning ? Colors.red : Colors.green,
+              color: timerState.isRunning ? Colors.redAccent : Colors.green,
               shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 6,
+                  offset: Offset(0, 4),
+                ),
+              ],
             ),
             child: Icon(
               timerState.isRunning ? Icons.pause : Icons.play_arrow,

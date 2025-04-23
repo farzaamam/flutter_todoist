@@ -32,7 +32,9 @@ class _CommentWidget extends ConsumerState<CommentWidget> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(commentControllerProvider(widget.taskId));
-    final controller = ref.read(commentControllerProvider(widget.taskId).notifier);
+    final controller = ref.read(
+      commentControllerProvider(widget.taskId).notifier,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,22 +50,31 @@ class _CommentWidget extends ConsumerState<CommentWidget> {
 
   Widget _buildCommentList(AsyncValue<List<Comment>> comments) {
     return comments.when(
-      data: (items) => items.isEmpty
-          ? const Text('No comments yet.')
-          : ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return Card(
-            margin: const EdgeInsets.symmetric(vertical: 4),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text(items[index].content),
-            ),
-          );
-        },
-      ),
+      data:
+          (items) =>
+              items.isEmpty
+                  ? const Text('No comments yet.')
+                  : ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: items.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 2,
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                        child: Padding(
+                          padding: const EdgeInsets.all(14),
+                          child: Text(
+                            items[index].content,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
       loading: () => const Center(child: LinearProgressIndicator()),
       error: (e, _) => Text('Failed to load comments: $e'),
     );
@@ -75,22 +86,40 @@ class _CommentWidget extends ConsumerState<CommentWidget> {
         Expanded(
           child: TextField(
             controller: _textController,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               hintText: 'Write a comment...',
-              border: OutlineInputBorder(),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              filled: true,
+              fillColor: Colors.grey.shade100,
             ),
           ),
         ),
         const SizedBox(width: 8),
         ElevatedButton(
           onPressed: isCreating ? null : () => _handleSubmit(controller),
-          child: isCreating
-              ? const SizedBox(
-            width: 18,
-            height: 18,
-            child: CircularProgressIndicator(strokeWidth: 1),
-          )
-              : const Text('Send'),
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          ),
+          child:
+              isCreating
+                  ? const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
+                  : const Text('Send'),
         ),
       ],
     );

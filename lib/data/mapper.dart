@@ -2,6 +2,7 @@ import 'package:todoist/data/datasource/db/database.dart';
 import 'package:todoist/data/datasource/remote/model/comment_dto.dart';
 import 'package:todoist/data/datasource/remote/model/task_dto.dart';
 import 'package:todoist/domain/model/comment.dart';
+import 'package:todoist/domain/model/completed_task_history.dart';
 import 'package:todoist/domain/model/task.dart';
 import 'package:todoist/domain/model/time_tracking.dart';
 
@@ -55,27 +56,25 @@ extension TaskMapper on Task {
       description: description,
       status: status.name,
       url: url,
-      createdAt: DateTime.now(),
     );
   }
 }
 
 extension TimeTrackingTableMapper on TimeTrackingTable {
-  TaskTimeTracking? toTaskTimeTracking() {
-    return TaskTimeTracking(
-      taskId: id,
-      startedAt: startedAt,
-      duration: duration,
-    );
+  TaskTimeTracking toTaskTimeTracking() {
+    final timeTracking = TaskTimeTracking(taskId: id);
+    timeTracking.setDuration(duration);
+    timeTracking.setStartedAt(startedAt);
+    return timeTracking;
   }
 }
 
 extension TaskTimeTrackingMapper on TaskTimeTracking {
-  TimeTrackingTable toTaskTimeTracking() {
+  TimeTrackingTable toTimeTrackingTable() {
     return TimeTrackingTable(
       id: taskId,
-      startedAt: startedAt,
-      duration: duration,
+      startedAt: getStartedAt(),
+      duration: getDuration(),
     );
   }
 }
@@ -98,5 +97,23 @@ extension TodoItemMapper on TodoItem {
 extension CommentDtoMapper on CommentDto {
   Comment toComment() {
     return Comment(id: id, content: content);
+  }
+}
+
+extension CompletedTaskHistoryMapper on CompletedTaskHistory {
+  CompletedTaskHistoryTable toTable() {
+    return CompletedTaskHistoryTable(
+      id: id,
+      title: content,
+      description: description,
+      completedAt: completedAt,
+      duration: duration,
+    );
+  }
+}
+
+extension CompletedTaskHistoryTableMapper on CompletedTaskHistoryTable {
+  CompletedTaskHistory toDomain() {
+    return CompletedTaskHistory(title, description, id, duration,completedAt);
   }
 }

@@ -15,25 +15,21 @@ class LocalTaskTimeTrackingRepository extends TimeTrackingRepository {
   }
 
   @override
-  Future<void> setTaskTimeTrackingStartedTime(
-    String taskId,
-    int startedAt,
-  ) async {
-    await appDatabase.updateTaskStartedAt(taskId, startedAt);
+  Future<void> createTimeTracking(TaskTimeTracking timeTracking) async {
+    await appDatabase.setTimeTracking(timeTracking.toTimeTrackingTable());
   }
 
   @override
-  Future<void> setTaskTimeTrackingDuration(
-    String taskId,
-    int updatedDuration,
-  ) async {
-    await appDatabase.updateTaskDuration(taskId, updatedDuration);
+  Future<void> updateTimeTracking(TaskTimeTracking timeTracking) async {
+    await appDatabase.setTimeTracking(timeTracking.toTimeTrackingTable());
   }
 
   @override
-  Future<void> createTimeTracking(String taskId) async {
-    await appDatabase.insertTimeTracking(
-      TimeTrackingTable(id: taskId, duration: 0, startedAt: 0),
-    );
+  Future<void> stop(String taskId) async {
+    final timeTracking = await getTimeTrackingById(taskId);
+    if (timeTracking != null) {
+      timeTracking.stop();
+      await updateTimeTracking(timeTracking);
+    }
   }
 }

@@ -13,7 +13,5 @@ abstract class TaskRepository {
 
   Future<void> updateTaskStatus(Task task);
 
-  Future<void> openTask(String taskId);
-
   Future<void> closeTask(String taskId);
 }

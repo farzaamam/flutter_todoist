@@ -1,7 +1,7 @@
 import 'package:todoist/data/datasource/remote/remote_comment_datasource.dart';
 import 'package:todoist/data/mapper.dart';
 import 'package:todoist/domain/model/comment.dart';
-import 'package:todoist/domain/repository/CommentRepository.dart';
+import 'package:todoist/domain/repository/comment_repository.dart';
 
 class RemoteCommentRepository extends CommentRepository {
   final RemoteCommentDataSource remoteCommentDataSource;

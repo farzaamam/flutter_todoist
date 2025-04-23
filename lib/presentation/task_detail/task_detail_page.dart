@@ -11,49 +11,32 @@ class TaskDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final task = ref.watch(taskProvider(taskId)); // ← plug in your provider
-    // final comments = ref.watch(commentsProvider(taskId)); // ← comments stream
-    // final timer = ref.watch(taskTimerProvider(taskId)); // ← timer provider
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Task Detail"),
-        actions: [
-          /*  IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () {
-              // TODO: Trigger delete confirmation & action
-            },
-          ),*/
-        ],
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Title & Description
             Text(
               task.content,
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 8),
             Text(
               task.description,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-
             const SizedBox(height: 16),
             const Divider(height: 32),
-
-            // Timer
             TimerWidget(taskId: task.id),
-
             const Divider(height: 32),
-
-            // Comments List
-            CommentWidget(taskId: task.id)
-          ],
+            CommentWidget(taskId: task.id),
+          ]
         ),
       ),
     );

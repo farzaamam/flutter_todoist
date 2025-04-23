@@ -1,11 +1,11 @@
 import 'package:todoist/domain/model/time_tracking.dart';
 
 abstract class TimeTrackingRepository {
-  Future<void> setTaskTimeTrackingStartedTime(String taskId, int startedTime);
+  Future<void> updateTimeTracking(TaskTimeTracking timeTracking);
 
   Future<TaskTimeTracking?> getTimeTrackingById(String id);
 
-  Future<void> setTaskTimeTrackingDuration(String taskId, int updatedDuration);
+  Future<void> createTimeTracking(TaskTimeTracking timeTracking);
 
-  Future<void> createTimeTracking(String taskId);
+  Future<void> stop(String taskId);
 }

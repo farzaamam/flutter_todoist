@@ -5,12 +5,14 @@ class TaskCard extends StatelessWidget {
   final Task task;
   final VoidCallback onTap;
   final bool isPortrait;
+  final bool draggable;
 
   const TaskCard({
     super.key,
     required this.task,
     required this.onTap,
     required this.isPortrait,
+    required this.draggable,
   });
 
   @override
@@ -24,26 +26,55 @@ class TaskCard extends StatelessWidget {
             )
             : const BoxConstraints(maxWidth: double.infinity, maxHeight: 80);
 
-    Widget buildCardContent() => Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: Text(
-            task.content,
-            maxLines: isPortrait ? 4 : 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
-    );
     return ConstrainedBox(
       constraints: cardConstraints,
-      child: LongPressDraggable<Task>(
-        data: task,
-        feedback: buildCardContent(),
-        childWhenDragging: Opacity(opacity: 0.4, child: buildCardContent()),
-        child: InkWell(onTap: onTap, child: buildCardContent()),
+      child:
+          draggable
+              ? LongPressDraggable<Task>(
+                data: task,
+                feedback: _buildCardContent(),
+                childWhenDragging: Opacity(
+                  opacity: 0.4,
+                  child: _buildCardContent(),
+                ),
+                child: InkWell(onTap: onTap, child: _buildCardContent()),
+              )
+              : InkWell(onTap: onTap, child: _buildCardContent()),
+    );
+  }
+
+  Widget _buildCardContent() {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side:
+            draggable
+                ? BorderSide.none
+                : BorderSide(color: Colors.grey.shade400, width: 1),
+      ),
+      color: draggable ? Colors.white : Colors.grey.shade100,
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                task.content,
+                maxLines: isPortrait ? 4 : 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: draggable ? Colors.black : Colors.grey,
+                  fontStyle: draggable ? FontStyle.normal : FontStyle.italic,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

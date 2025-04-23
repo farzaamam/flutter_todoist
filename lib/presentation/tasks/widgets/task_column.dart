@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todoist/domain/model/task.dart';
+import 'package:todoist/presentation/ui_utils.dart';
 import 'task_card.dart';
 
 class TaskColumn extends StatelessWidget {
@@ -33,47 +34,71 @@ class TaskColumn extends StatelessWidget {
         builder:
             (context, candidateData, rejectedData) => Container(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: color.withOpacity(0.1)),
+              decoration: BoxDecoration(
+                color: color.withOpacity(
+                  candidateData.isNotEmpty ? 0.15 : 0.05,
+                ),
+                border:
+                    candidateData.isNotEmpty
+                        ? Border.all(color: color, width: 2)
+                        : null,
+                borderRadius: BorderRadius.circular(12),
+              ),
               child: Column(
                 children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  _buildColumnTitle(),
                   const SizedBox(height: 8),
-                  Expanded(
-                    child: ListView(
-                      key: PageStorageKey(status.name),
-                      controller: scrollController,
-                      scrollDirection:
-                          isPortrait ? Axis.horizontal : Axis.vertical,
-                      children:
-                          tasks
-                              .map(
-                                (task) => TaskCard(
-                                  task: task,
-                                  onTap: () => onTapTask(task),
-                                  isPortrait: isPortrait,
-                                ),
-                              )
-                              .toList(),
-                    ),
-                  ),
-                  if (candidateData.isNotEmpty)
-                    const Padding(
-                      padding: EdgeInsets.only(top: 12),
-                      child: Text(
-                        "Drop Here",
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ),
+                  _buildColumnList(),
                 ],
               ),
             ),
       ),
+    );
+  }
+
+  Widget _buildColumnList() {
+    return Expanded(
+      child: ListView(
+        key: PageStorageKey(status.name),
+        controller: scrollController,
+        scrollDirection: isPortrait ? Axis.horizontal : Axis.vertical,
+        children:
+            tasks
+                .map(
+                  (task) => TaskCard(
+                    task: task,
+                    onTap: () => onTapTask(task),
+                    isPortrait: isPortrait,
+                    draggable: status != TaskStatus.done,
+                  ),
+                )
+                .toList(),
+      ),
+    );
+  }
+
+  Widget _buildColumnTitle() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          status == TaskStatus.toDo
+              ? Icons.pending_actions
+              : status == TaskStatus.inProgress
+              ? Icons.play_circle_fill
+              : Icons.check_circle,
+          color: color,
+        ),
+        const SizedBox(width: 6),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: color.darken(),
+          ),
+        ),
+      ],
     );
   }
 }

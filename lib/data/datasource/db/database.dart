@@ -14,8 +14,6 @@ class TodoItems extends Table {
 
   TextColumn get url => text()();
 
-  DateTimeColumn get createdAt => dateTime().nullable()();
-
   @override
   Set<Column> get primaryKey => {id};
 }
@@ -31,7 +29,24 @@ class TimeTrackingTables extends Table {
   Set<Column> get primaryKey => {id};
 }
 
-@DriftDatabase(tables: [TodoItems, TimeTrackingTables])
+class CompletedTaskHistoryTables extends Table {
+  TextColumn get id => text()();
+
+  TextColumn get title => text()();
+
+  TextColumn get description => text()();
+
+  IntColumn get completedAt => integer().withDefault(const Constant(0))();
+
+  IntColumn get duration => integer().withDefault(const Constant(0))();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+@DriftDatabase(
+  tables: [TodoItems, TimeTrackingTables, CompletedTaskHistoryTables],
+)
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
@@ -62,22 +77,19 @@ class AppDatabase extends _$AppDatabase {
       ..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
   }
 
-
-  Future<void> updateTaskDuration(String taskId, int newDuration) async {
-    await (update(timeTrackingTables)..where(
-      (tbl) => tbl.id.equals(taskId),
-    )).write(TimeTrackingTablesCompanion(duration: Value(newDuration)));
-  }
-
-  Future<void> updateTaskStartedAt(String taskId, int startedAt) async {
-    await (update(timeTrackingTables)..where(
-      (tbl) => tbl.id.equals(taskId),
-    )).write(TimeTrackingTablesCompanion(startedAt: Value(startedAt)));
-  }
-
-  Future<void> insertTimeTracking(TimeTrackingTable timeTracking) async {
+  Future<void> setTimeTracking(TimeTrackingTable timeTracking) async {
     await into(timeTrackingTables).insertOnConflictUpdate(timeTracking);
   }
+
+  Future<void> insertCompletedTask(CompletedTaskHistoryTable task) async {
+    await into(completedTaskHistoryTables).insertOnConflictUpdate(task);
+  }
+
+  Stream<List<CompletedTaskHistoryTable>> watchCompletedTasks() =>
+      select(completedTaskHistoryTables).watch();
+
+  Future<List<CompletedTaskHistoryTable>> getAllCompletedTasks() =>
+      select(completedTaskHistoryTables).get();
 
   static QueryExecutor _openConnection() {
     return driftDatabase(name: 'my_database');

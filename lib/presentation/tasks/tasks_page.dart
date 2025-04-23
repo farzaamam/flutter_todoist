@@ -36,6 +36,14 @@ class _TasksPage extends ConsumerState<TasksPage> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 1,
+        titleTextStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+          color: Colors.black,
+        ),
+        iconTheme: const IconThemeData(color: Colors.black),
         title: const Text('Kanban Board'),
         actions: <Widget>[
           IconButton(

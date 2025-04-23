@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todoist/di/global_providers.dart';
 import 'package:todoist/domain/model/comment.dart';
-import 'package:todoist/domain/repository/CommentRepository.dart';
+import 'package:todoist/domain/repository/comment_repository.dart';
 
 final commentControllerProvider = StateNotifierProvider.autoDispose
     .family<CommentController, CommentState, String>((ref, taskId) {
