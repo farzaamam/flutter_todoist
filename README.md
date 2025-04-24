@@ -159,3 +159,10 @@ cd flutter_todoist
 ```bash
 flutter test 
 ```
+
+### 🔧 4. Working output in Android
+
+```bash
+flutter build apk --debug
+```
+Get the output from this path: ``build/app/outputs/flutter-apk/app-debug.apk``
