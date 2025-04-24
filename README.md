@@ -26,11 +26,7 @@ If the functionality that you want to implement is not provided by the API servi
    - Users able to:
       - Create new tasks
       - Move tasks between columns to reflect progress
-### 🏁 Kanban Board
-
-![Kanban Board](/screenshots/board.png)
-
-![Kanban Board](screenshots/board.png)
+<img src="screenshots/kanban_board.png" alt="Kanban Board" height="400"/>
 
 2. **Task Timer**
    - Each task has a timer feature to track time spent.
