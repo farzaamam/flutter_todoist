@@ -17,7 +17,16 @@ The goal of this challenge is to build a **Task Time Tracking Application** usin
 If a desired functionality is not provided by the API, local solutions may be used.
 
 ---
+## 🎥 Demo
 
+You can watch the demo by [downloading the video here](screenshots/demo.mp4) or opening it directly.
+
+> The demo covers:  
+> ✅ Kanban task management  
+> ✅ Timer functionality  
+> ✅ Commenting system  
+> ✅ Completed task tracking
+---
 ## ✅ Core Features
 
 1. **Kanban Board**
@@ -133,7 +142,7 @@ Built with robust engineering principles:
 
 ## 🛠️ Setup & Running the Project
 
-### 🔧 1. Clone the Repository & Running the project
+### 🔧 1. Clone the Repository
 
 ```bash
 git clone https://github.com/farzaamam/flutter_todoist.git
@@ -145,7 +154,7 @@ To integrate with the [Todoist REST API v2](https://developer.todoist.com/rest/v
 1. Go to your [Todoist Developer Dashboard](https://app.todoist.com/app/settings/integrations/developer).
 2. Generate or copy your **Personal API Token**.
 3. Create a `.env` file at the root of the project.
-4. Add the following line to your `.env` file:
+4. Add the following line to your `.env` file with your personal key:
 ```env
 AUTH_TOKEN=0213243455
 ```
