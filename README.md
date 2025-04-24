@@ -26,6 +26,7 @@ If the functionality that you want to implement is not provided by the API servi
     - Users able to:
         - Create new tasks
         - Move tasks between columns to reflect progress
+      
           <img src="screenshots/board.png" alt="Kanban Board" height="400"/>
           <img src="screenshots/create_task.png" alt="Create Task" height="400"/>
 
