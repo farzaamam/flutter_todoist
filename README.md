@@ -52,16 +52,19 @@ If the functionality that you want to implement is not provided by the API servi
    - Enhances performance and provides offline-read support
 ---
 
-### 🔌 API Usage Guidelines
 
-- Use the Todoist REST API: [https://developer.todoist.com/rest/v2](https://developer.todoist.com/rest/v2)
-- **Authentication** is **not required**  
-  ➤ Use a **Test Token** available via the [App Management Console](https://todoist.com/prefs/integrations)
+## 🔐 Before running the project: API Authentication Setup
 
-- If a required feature is **not provided** by the Todoist API:  
-  ➤ Implement it using **local storage or logic**  
-  (e.g., timer tracking and comments can be stored locally)
+To connect with the [Todoist REST API v2](https://developer.todoist.com/rest/v2/#overview), you'll need to set up an authentication token.
 
+1. Visit your [Todoist Developer Dashboard](https://app.todoist.com/app/settings/integrations/developer).
+2. Generate or copy your **Personal API Token**.
+3. At the root of this project, create a file named `.env`.
+4. Add the following line to your `.env` file:
+
+```env
+AUTH_TOKEN=02343536456464567457
+```
 ---
 
 ### 📝 Notes
