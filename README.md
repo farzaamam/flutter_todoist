@@ -141,5 +141,21 @@ To integrate with the [Todoist REST API v2](https://developer.todoist.com/rest/v
 4. Add the following line to your `.env` file:
 
 ```env
-AUTH_TOKEN=your_token_here
+AUTH_TOKEN=0213243455
+```
+
+## 🛠️ Setup & Running the Project
+### 🔧 1. API Authentication Setup
+
+### 🔧 2. Clone the Repository
+
+```bash
+git clone https://github.com/farzaamam/flutter_todoist.git
+cd flutter_todoist
+```
+
+### 🔧 3. Running the unit tests
+
+```bash
+flutter test 
 ```
