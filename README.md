@@ -19,7 +19,12 @@ If a desired functionality is not provided by the API, local solutions may be us
 ---
 ## 🎥 Demo
 
-You can watch the demo by [downloading the video here](screenshots/demo.mp4) or opening it directly.
+You can watch the demo or [downloading the video here](screenshots/demo.mp4).
+
+<video width="100%" controls>
+  <source src="screenshots/demo.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 > The demo covers:  
 > ✅ Kanban task management  
