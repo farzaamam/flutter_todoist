@@ -27,20 +27,25 @@ If the functionality that you want to implement is not provided by the API servi
       - Create new tasks
       - Move tasks between columns to reflect progress
 <img src="screenshots/board.png" alt="Kanban Board" height="400"/>
+<img src="screenshots/create_task.png" alt="Create Task" height="400"/>
 
 2. **Task Timer**
    - Each task has a timer feature to track time spent.
    - Users should be able to start and stop the timer.
+
+4. **Task Comments**
+    - Allow users to add comments to individual tasks
+    - Display existing comments for each task
+
+<img src="screenshots/task_detail.png" alt="Task Detail" height="400"/>
 
 3. **Completed Task History**
    - Provide a history view of all completed tasks.
    - Each completed task shows:
       - Time spent
       - Completion date
+<img src="screenshots/task_history.png" alt="Task Detail" height="400"/>
 
-4. **Task Comments**
-   - Allow users to add comments to individual tasks
-   - Display existing comments for each task
 
 5. **Caching Mechanism** *(Bonus)*
    - Implemented a caching layer to persist and retrieve task data efficiently
