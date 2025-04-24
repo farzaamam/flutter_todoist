@@ -131,36 +131,38 @@ Built with robust engineering principles:
 
 ---
 
-## 🔐 API Authentication Setup
+## 🛠️ Setup & Running the Project
 
+### 🔧 1. Clone the Repository & Running the project
+
+```bash
+git clone https://github.com/farzaamam/flutter_todoist.git
+cd flutter_todoist
+```
+### 🔧 2. API Authentication Setup
 To integrate with the [Todoist REST API v2](https://developer.todoist.com/rest/v2/#overview), follow these steps:
 
 1. Go to your [Todoist Developer Dashboard](https://app.todoist.com/app/settings/integrations/developer).
 2. Generate or copy your **Personal API Token**.
 3. Create a `.env` file at the root of the project.
 4. Add the following line to your `.env` file:
-
 ```env
 AUTH_TOKEN=0213243455
 ```
-
-## 🛠️ Setup & Running the Project
-### 🔧 1. API Authentication Setup
-
-### 🔧 2. Clone the Repository
+### 🔧 3. Running the project
 
 ```bash
-git clone https://github.com/farzaamam/flutter_todoist.git
-cd flutter_todoist
+flutter pub get 
+flutter run
 ```
 
-### 🔧 3. Running the unit tests
+### 🔧 4. Running the unit tests
 
 ```bash
 flutter test 
 ```
 
-### 🔧 4. Working output in Android
+### 🔧 5. Working output in Android
 
 ```bash
 flutter build apk --debug
